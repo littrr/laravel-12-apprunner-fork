@@ -1,0 +1,55 @@
+#!/bin/bash
+
+main() {
+    prepare_file_permissions
+    run_npm_build
+    prepare_storage
+    run_migrations
+    optimize_app
+    run_services
+    run_server "$@"
+}
+
+prepare_file_permissions() {
+    chmod a+x ./artisan
+}
+
+run_npm_build() {
+    echo "Installing NPM dependencies"
+    if [ -f "package.json" ]; then
+        echo "Running NPM clean install"
+        npm ci
+
+        echo "Running NPM build"
+        npm run build
+    else
+        echo "No package.json found, skipping NPM build"
+    fi
+}
+
+prepare_storage() {
+    # Ensure the symlink exists
+    ./artisan storage:link
+}
+
+
+run_migrations() {
+    ./artisan migrate
+}
+
+optimize_app() {
+    ./artisan optimize:clear
+    ./artisan optimize
+}
+
+run_services()
+{
+    service nginx restart
+    /usr/bin/supervisord -n -c /etc/supervisor/conf.d/supervisord.conf
+}
+
+run_server() {
+    exec /usr/local/bin/docker-php-entrypoint "$@"
+}
+
+main "$@"
