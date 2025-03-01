@@ -29,17 +29,17 @@ run_npm_build() {
 
 prepare_storage() {
     # Ensure the symlink exists
-    ./artisan storage:link
+    php artisan storage:link
 }
 
 
 run_migrations() {
-    ./artisan migrate
+    php artisan migrate
 }
 
 optimize_app() {
-    ./artisan optimize:clear
-    ./artisan optimize
+    php artisan optimize:clear
+    php artisan optimize
 }
 
 run_services()
