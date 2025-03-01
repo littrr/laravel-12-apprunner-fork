@@ -38,8 +38,11 @@ RUN sed 's_@php artisan package:discover_/bin/true_;' -i composer.json \
     && composer install --ignore-platform-req=php --no-dev --optimize-autoloader \
     && composer clear-cache \
     && php artisan package:discover --ansi \
-    && chown -R www-data:www-data /var/www/html/storage \
-    && chmod -R 775 /var/www/html/storage \
+    && chown -R www-data:www-data storage \
+    && chmod -R 775 storage \
+    && cd storage/logs \
+    && touch laravel.log \
+    && chmod 777 /var/www/html/storage/logs/laravel.log \
     && mkdir -p  /var/www/html/storage/framework/sessions  /var/www/html/storage/framework/views storage/framework/cache/data
 
 # Configure nginx to work with php-fpm
