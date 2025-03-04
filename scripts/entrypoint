@@ -15,11 +15,15 @@ prepare_file_permissions() {
 }
 
 run_npm_build() {
-    if [ -d node_modules ]; then
+    echo "Installing NPM dependencies"
+    if [ -f "package.json" ]; then
+        echo "Running NPM clean install"
+        npm ci
+
         echo "Running NPM build"
         npm run build
     else
-        echo "No node modules found, skipping NPM build"
+        echo "No package.json found, skipping NPM build"
     fi
 }
 
