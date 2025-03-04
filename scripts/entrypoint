@@ -34,7 +34,7 @@ prepare_storage() {
 
 
 run_migrations() {
-    php artisan migrate
+    php artisan migrate --force
 }
 
 optimize_app() {
