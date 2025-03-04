@@ -15,7 +15,12 @@ prepare_file_permissions() {
 }
 
 run_npm_build() {
-    npm run build
+    if [ -d node_modules ]; then
+        echo "Running NPM build"
+        npm run build
+    else
+        echo "No node modules found, skipping NPM build"
+    fi
 }
 
 prepare_storage() {
