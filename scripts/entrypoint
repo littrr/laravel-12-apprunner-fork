@@ -2,7 +2,7 @@
 
 main() {
     prepare_file_permissions
-    run_npm_build
+    #run_npm_build
     prepare_storage
     run_migrations
     optimize_app
