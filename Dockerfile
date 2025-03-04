@@ -53,7 +53,7 @@ RUN mkdir -p /var/log/supervisor
 COPY ./scripts/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Expose port 80
-# EXPOSE 80
+EXPOSE 80
 
 # Copy entrypoint
 COPY ./scripts/entrypoint /usr/local/bin/php-entrypoint
