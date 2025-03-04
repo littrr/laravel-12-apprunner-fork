@@ -2,6 +2,7 @@
 
 main() {
     prepare_file_permissions
+    run_npm_build
     prepare_storage
     run_migrations
     optimize_app
@@ -11,6 +12,10 @@ main() {
 
 prepare_file_permissions() {
     chmod a+x ./artisan
+}
+
+run_npm_build() {
+    npm run build
 }
 
 prepare_storage() {

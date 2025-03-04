@@ -46,7 +46,6 @@ RUN sed 's_@php artisan package:discover_/bin/true_;' -i composer.json \
     && mkdir -p  /var/www/html/storage/framework/sessions  /var/www/html/storage/framework/views storage/framework/cache/data
 
 RUN npm ci
-RUN npm run build
 
 # Configure nginx to work with php-fpm
 COPY ./scripts/default.conf /etc/nginx/sites-available/default
