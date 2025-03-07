@@ -7,5 +7,15 @@ Route::get('/', function () {
 });
 
 Route::get('/health', function () {
-    return response()->json(['message' => 'healthy'], 200);
+    return response()->json([
+        'message' => 'healthy',
+        'env' => [
+            'dbname' => getenv('dbname'),
+            'username' => getenv('username'),
+            'password' => getenv('password'),
+            'host' => getenv('host'),
+            'port' => getenv('port'),
+            'config database host' => config('database.connections.mysql.host'),
+        ]
+    ], 200);
 });
