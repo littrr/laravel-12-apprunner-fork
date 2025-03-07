@@ -11,6 +11,9 @@ main() {
 }
 
 prepare_file_permissions() {
+    cp .env.example .env
+    chmod 777 .env
+    php artisan key:generate
     chmod a+x ./artisan
 }
 
