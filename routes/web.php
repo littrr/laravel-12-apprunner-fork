@@ -6,7 +6,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/health', function () {
+Route::get('/whats-your-health', function () {
     return response()->json([
         'message' => 'healthy',
         'env' => [
