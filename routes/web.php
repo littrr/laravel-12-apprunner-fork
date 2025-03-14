@@ -9,6 +9,7 @@ Route::get('/', function () {
 Route::get('/whats-your-health', function () {
     return response()->json([
         'message' => 'healthy',
+        'status' => 200,
         'env' => [
             'dbname' => getenv('dbname'),
             'username' => getenv('username'),
