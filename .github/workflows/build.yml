@@ -1,8 +1,9 @@
 name: Build Docker Images
 on:
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows: [Run Tests]
+    types:
+      - completed
 
 jobs:
   build:
@@ -10,20 +11,61 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'latest'
+
+      - name: Install Python dependencies
+        run: |
+          python3 -m pip install -r iac/requirements.txt
+          python3 -m pip install -r iac/requirements-dev.txt
+
+      - name: Install CDK
+        run: |
+          npm install -g aws-cdk
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
-      - name: Login to AWS ECR
+
+      - name: Setup ECR Repository
+        run: |
+          cdk deploy EcrStack --app "python3 iac/app.py" --require-approval=never
+
+      - name: Get ECR Repository name
+        id: get-ecr-repository-name
+        run: |
+          # Get the Ecr repository name from CloudFormation outputs and set it as an environment variable
+          ECR_REPOSITORY_NAME=$(aws cloudformation describe-stacks \
+            --stack-name EcrStack \
+            --query 'Stacks[0].Outputs[?OutputKey==`RepositoryNameOutput`].OutputValue' \
+            --output text)
+          echo "ECR_REPOSITORY_NAME=$ECR_REPOSITORY_NAME" >> $GITHUB_OUTPUT
+
+      - name: Build and push image to ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
       - name: Build and push docker image
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          REPOSITORY: ${{ secrets.AWS_ECR_PRODUCTION_REPOSITORY }}
+          REPOSITORY: ${{ steps.get-ecr-repository-name.outputs.ECR_REPOSITORY_NAME }}
           IMAGE_TAG: ${{ github.sha }}
+          IMAGE_NAME: laravel-12-apprunner-web
         run: |
-          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
+          docker build -t $IMAGE_NAME .
+
+          docker tag $IMAGE_NAME $REGISTRY/$REPOSITORY:$IMAGE_TAG
+          docker tag $IMAGE_NAME $REGISTRY/$REPOSITORY:latest
+
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+          docker push $REGISTRY/$REPOSITORY:latest
