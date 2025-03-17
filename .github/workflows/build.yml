@@ -62,6 +62,7 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
           IMAGE_NAME: laravel-12-apprunner-web
         run: |
+          echo $IMAGE_NAME $REGISTRY/$REPOSITORY
           docker build -t $IMAGE_NAME .
 
           docker tag $IMAGE_NAME $REGISTRY/$REPOSITORY:$IMAGE_TAG
