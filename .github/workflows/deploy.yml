@@ -41,4 +41,4 @@ jobs:
           cp .env.example .env
           sed -i "s/\bAWS_ACCOUNT_ID\b/${AWS_ACCOUNT_ID}/g" .env
 
-          cdk deploy -all --require-approval=never
+          cdk deploy --all --require-approval=never
