@@ -32,5 +32,10 @@ jobs:
 
       - name: Deploy Apprunner
         working-directory: iac
+        env:
+          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
         run: |
-          cdk deploy --all --require-approval=never
+          cp .env.example .env
+          sed -i "s/\bAWS_ACCOUNT_ID\b/${AWS_ACCOUNT_ID}/g" .env
+
+          cdk destroy --all --require-approval=never
