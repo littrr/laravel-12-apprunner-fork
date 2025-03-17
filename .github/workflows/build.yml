@@ -12,20 +12,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
           node-version: 'latest'
 
-      - name: Install Python dependencies
+      - name: Install NPM
         run: |
-          python3 -m pip install -r iac/requirements.txt
-          python3 -m pip install -r iac/requirements-dev.txt
+          cd iac
+          npm install
 
       - name: Install CDK
         run: |
@@ -40,7 +35,7 @@ jobs:
 
       - name: Setup ECR Repository
         run: |
-          cdk deploy EcrStack --app "python3 iac/app.py" --require-approval=never
+          cdk deploy EcrStack --app "npx ts-node --prefer-ts-exts iac/bin/cdk-apprunner.ts" --require-approval=never
 
       - name: Get ECR Repository name
         id: get-ecr-repository-name
