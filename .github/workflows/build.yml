@@ -34,8 +34,9 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Setup ECR Repository
+        working-directory: iac
         run: |
-          cdk deploy EcrStack --app "npx ts-node --prefer-ts-exts iac/bin/cdk-apprunner.ts" --require-approval=never
+          cdk deploy EcrStack --require-approval=never
 
       - name: Get ECR Repository name
         id: get-ecr-repository-name
