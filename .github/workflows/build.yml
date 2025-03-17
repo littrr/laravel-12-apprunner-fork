@@ -40,6 +40,7 @@ jobs:
         run: |
           cp .env.example .env
           sed -i "s/\AWS_ACCOUNT_ID\b/${AWS_ACCOUNT_ID}/g" .env
+          cat .env
 
           cdk deploy EcrStack --require-approval=never
 
