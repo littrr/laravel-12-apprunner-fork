@@ -40,7 +40,7 @@ export class ApprunnerStack extends cdk.Stack {
     ecrRole.addToPolicy(new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
       actions: ["ecr:GetAuthorizationToken"],
-      resources: ["*"], //`arn:aws:ecr:${process.env.REGION}:${process.env.ACCOUNT_ID}:repository/${repository.repositoryName}`
+      resources: [repository.repositoryArn],
     }));
 
     ecrRole.addToPolicy(new iam.PolicyStatement({
@@ -58,7 +58,7 @@ export class ApprunnerStack extends cdk.Stack {
         "ecr:ListTagsForResource",
         "ecr:DescribeImageScanFindings",
       ],
-      resources: ["*"], //`arn:aws:ecr:${process.env.REGION}:${process.env.ACCOUNT_ID}:repository/${repository.repositoryName}`
+      resources: [repository.repositoryArn],
     }));
 
     return ecrRole;
