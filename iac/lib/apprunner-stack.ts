@@ -41,7 +41,7 @@ export class ApprunnerStack extends cdk.Stack {
       effect: iam.Effect.ALLOW,
       actions: ["ecr:GetAuthorizationToken"],
       resources: [
-        `arn:aws:ecr:${this.region}:${repository.repositoryUri}`
+        `arn:aws:ecr:${process.env.REGION}:${process.env.ACCOUNT_ID}:repository/${repository.repositoryName}`
       ],
     }));
 
@@ -61,7 +61,7 @@ export class ApprunnerStack extends cdk.Stack {
         "ecr:DescribeImageScanFindings",
       ],
       resources: [
-        `arn:aws:ecr:${this.region}:${repository.repositoryUri}`
+        `arn:aws:ecr:${process.env.REGION}:${process.env.ACCOUNT_ID}:repository/${repository.repositoryName}`
       ],
     }));
 
@@ -109,7 +109,7 @@ export class ApprunnerStack extends cdk.Stack {
         },
         autoDeploymentsEnabled: true,
         imageRepository: {
-          imageIdentifier: `${process.env.ACCOUNT_ID}.dkr.ecr.${process.env.REGION}.amazonaws.com/${repository.repositoryUri}:latest`,
+          imageIdentifier: `${process.env.ACCOUNT_ID}.dkr.ecr.${process.env.REGION}.amazonaws.com/${repository.repositoryName}:latest`,
           imageRepositoryType: "ECR",
           imageConfiguration: {
             port: process.env.APPRUNNER_IMAGE_PORT,
