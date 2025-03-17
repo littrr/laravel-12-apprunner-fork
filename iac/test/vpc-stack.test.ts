@@ -1,18 +1,17 @@
 import * as cdk from 'aws-cdk-lib';
 import { Capture, Match, Template } from 'aws-cdk-lib/assertions';
-import * as RdsResource from '../lib/vpc-stack';
-import { getConfig } from '../lib/config';
+import * as VpcStack from '../lib/vpc-stack';
 
-describe('RdsResourceStack', () => {
+describe('VpcStack', () => {
     let template: Template;
-    let stack: RdsResource.RdsResourceStack;
+    let stack: VpcStack.VpcStack;
 
     beforeAll(() => {
         const app = new cdk.App();
-        stack = new RdsResource.RdsResourceStack(app, 'RdsResourceStack', {
+        stack = new VpcStack.VpcStack(app, 'VpcStack', {
             env: {
-                account: getConfig().ACCOUNT,
-                region: getConfig().REGION,
+                account: process.env.ACCOUNT,
+                region: process.env.REGION,
             },
         });
 
@@ -157,7 +156,7 @@ describe('RdsResourceStack', () => {
         template.resourceCountIs("AWS::SecretsManager::Secret", 1);
 
         template.hasResourceProperties("AWS::SecretsManager::Secret", {
-            Name: "rds/dev/cdkapprunner/mysql"
+            Name: `rds/prod/${process.env.APPRUNNER_SERVICE_NAME}/mysql`
         });
     });
 });
