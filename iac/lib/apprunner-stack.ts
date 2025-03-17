@@ -109,7 +109,7 @@ export class ApprunnerStack extends cdk.Stack {
         },
         autoDeploymentsEnabled: true,
         imageRepository: {
-          imageIdentifier: `arn:aws:ecr:${this.region}:${repository.repositoryUri}:latest`,
+          imageIdentifier: `${process.env.ACCOUNT_ID}.dkr.ecr.${process.env.REGION}.amazonaws.com/${repository.repositoryUri}:latest`,
           imageRepositoryType: "ECR",
           imageConfiguration: {
             port: process.env.APPRUNNER_IMAGE_PORT,
