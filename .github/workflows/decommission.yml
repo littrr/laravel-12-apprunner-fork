@@ -1,4 +1,4 @@
-name: Deploy infra and application
+name: Decommission infrastructure
 on:
     workflow_dispatch:
 
