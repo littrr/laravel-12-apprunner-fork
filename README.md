@@ -36,5 +36,12 @@ It also provides CI/CD solution to make deployments effortless.
     - Provision RDS and save RDS credentials in AWS Secret Manager.
     - Provision App Runner to pull your applications's docker image and run the application.
 
+The infrastructure and application deployment take close to 20 minutes to provision. Once the deployment is done, get the App Runner URL from the "Deploy infra and application" Github action.
+
+From the "Deploy infra and application" Github action, expand the "Depoly Apprunner" job and copy the value for `CdkApprunnerStack.serviceUrl` output. The App Runner URL would be similar to `jzcyikzimx.***.awsapprunner.com`.
+Replace the *** with your AWS Region.
+
+So `jzcyikzimx.***.awsapprunner.com` would be `jzcyikzimx.us-east-1.awsapprunner.com`
+
 
 ## Deep Dive
