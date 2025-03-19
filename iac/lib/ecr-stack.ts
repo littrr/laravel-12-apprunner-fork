@@ -17,7 +17,8 @@ export class EcrStack extends cdk.Stack {
     }
 
     private provisionEcrRepo() {
-        return new ecr.Repository(this, `${String(process.env.ECR_REPOSITORY_NAME)}`, {
+        return new ecr.Repository(this, `${String(process.env.ECR_REPOSITORY_NAME)}-ecr-repository`, {
+            repositoryName: String(process.env.ECR_REPOSITORY_NAME),
             imageScanOnPush: Boolean(process.env.ECR_SCAN_IMAGE_ON_PUSH),
             removalPolicy: cdk.RemovalPolicy.DESTROY, // or cdk.RemovalPolicy.RETAIN (option)
         });
