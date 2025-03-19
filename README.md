@@ -20,6 +20,9 @@ It also provides CI/CD solution to make deployments effortless.
 ## Quickstart
 - Fork this repository.
 - Clone your forked repository.
+- Enable Github Action for your repository.
+    - Click "Actions" on the repository tab.
+    - Click "I understand my workflows, go ahead and enable them" button.
 - Set your AWS Access Key ID, AWS Secret Access Key, AWS Account ID, and AWS Region as GitHub repository secrets.
 - Follow these steps to setup the repository secrets; AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_ACCOUNT_ID and AWS_REGION.
     - Navigate to your repository's settings.
